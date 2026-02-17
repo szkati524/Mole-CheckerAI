@@ -1,0 +1,36 @@
+.main-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #121212;
+    position:relative;
+}
+
+.logo-text{
+    position: absolute;
+    top: 40px;
+    font-family: 'Arial',sans-serif;
+    font-weight: 700;
+    font-size:3rem;
+    color:blue;
+    letter-spacing:4px;
+}
+.main-page-button {
+    background:transparent ;
+    color: #ffffff;
+    font-size: 30px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 300;
+    padding: 15px 30px;
+    border:2px solid white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: lowercase;
+}
+.main-page-button:hover{
+    background-color: white;
+    color:blue;
+    opacity: 1;
+
+}
