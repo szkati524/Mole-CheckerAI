@@ -1,34 +1,39 @@
 package com.example.MoleCheckerAI.controller;
 
 import com.example.MoleCheckerAI.service.AiAnalyzerService;
-import org.springframework.core.io.InputStreamResource;
+import com.example.MoleCheckerAI.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.security.Principal;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/scan")
 public class MoleController {
 
     private final AiAnalyzerService aiAnalyzerService;
+    private final UserService userService;
 
-    public MoleController(AiAnalyzerService aiAnalyzerService) {
+    public MoleController(AiAnalyzerService aiAnalyzerService, UserService userService) {
         this.aiAnalyzerService = aiAnalyzerService;
+        this.userService = userService;
     }
     @PostMapping
-    public ResponseEntity<String> scanMole(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<String> scanMole(@RequestParam("file") MultipartFile file, Principal principal){
         if (file.isEmpty()){
             return ResponseEntity.badRequest().body("Please send a image");
         }
         try {
-            var imageResource= new InputStreamResource(file.getInputStream());
-            String result = aiAnalyzerService.analyzeSkinImage(imageResource);
+            String result = aiAnalyzerService.analyzeSkinImage(file.getResource());
+            String username = principal.getName();
+            userService.addScanToHistory(username,result);
             return ResponseEntity.ok(result);
-        } catch (IOException e){
+
+        } catch (Exception e){
             return ResponseEntity.status(500).body("Error during analyzing image " + e.getMessage() );
         }
+
     }
 }

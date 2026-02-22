@@ -21,7 +21,7 @@ public class AiAnalyzerService {
     }
     public String analyzeSkinImage(Resource imageResource){
 String instruction = "Analyze this skin mole. Describe if it looks suspicious based on ABCDE rules (asymmetry, borders, color). Keep it professional and educational.";
-      var media = new Media(MimeTypeUtils.IMAGE_JPEG,imageResource);
+      var media = new Media(MimeTypeUtils.parseMimeType("image/*"),imageResource);
        var userMessage=  new UserMessage(instruction);
        userMessage.getMedia().add(media);
 
