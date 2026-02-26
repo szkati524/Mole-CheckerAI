@@ -3,11 +3,11 @@ package com.example.MoleCheckerAI.controller;
 import com.example.MoleCheckerAI.User;
 import com.example.MoleCheckerAI.config.JwtUtils;
 import com.example.MoleCheckerAI.service.UserService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +25,9 @@ public class AuthController {
     }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user){
+        if (user.getUsername() == null || user.getPassword() == null){
+            ResponseEntity.badRequest().body("Error username and password cannot be null!!");
+        }
         userService.registerUser(user.getUsername(),user.getPassword());
         return ResponseEntity.ok("User registered!");
 
