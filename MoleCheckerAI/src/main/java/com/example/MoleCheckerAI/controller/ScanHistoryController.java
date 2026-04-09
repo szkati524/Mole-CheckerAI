@@ -1,6 +1,6 @@
 package com.example.MoleCheckerAI.controller;
 
-import com.example.MoleCheckerAI.ScanHistory;
+import com.example.MoleCheckerAI.entity.ScanHistory;
 import com.example.MoleCheckerAI.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

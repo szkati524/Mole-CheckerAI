@@ -1,22 +1,28 @@
 package com.example.MoleCheckerAI.controller;
 
-import com.example.MoleCheckerAI.User;
+import com.example.MoleCheckerAI.dto.LoginRequest;
+import com.example.MoleCheckerAI.dto.RegisterRequest;
+import com.example.MoleCheckerAI.entity.User;
 import com.example.MoleCheckerAI.config.JwtUtils;
 import com.example.MoleCheckerAI.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
-    private UserService userService;
+    private final UserService userService;
 
     public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserService userService) {
         this.authenticationManager = authenticationManager;
@@ -24,18 +30,30 @@ public class AuthController {
         this.userService = userService;
     }
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user){
-        if (user.getUsername() == null || user.getPassword() == null){
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request){
+        if (request.username() == null || request.password() == null){
             ResponseEntity.badRequest().body("Error username and password cannot be null!!");
         }
-        userService.registerUser(user.getUsername(),user.getPassword());
-        return ResponseEntity.ok("User registered!");
+        try {
+            userService.registerUser(request.username(),request.password(),request.email());
+            return ResponseEntity.ok("User registered!");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+
 
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
-        String token = jwtUtils.generateToken(user.getUsername());
-        return ResponseEntity.ok(token);
+    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
+            String token = jwtUtils.generateToken(authentication.getName());
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            return ResponseEntity.ok(response);
+        }catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
+        }
     }
 }

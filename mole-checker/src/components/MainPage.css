@@ -1,69 +1,128 @@
+
+
+
 .main-page-container {
     height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 40px 20px;
-    background-color: #121212; /* Ciemne tło */
-    box-sizing: border-box;
-    overflow: hidden; /* Zapobiega pojawianiu się paska przewijania podczas animacji */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    
+    
+    background: 
+        linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(20, 20, 20, 0.7) 100%),
+        url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1600&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
+
+
+.main-page-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: inherit;
+    filter: blur(4px);
+    z-index: 1;
+}
+
 
 .logo-text {
-    font-size: 2.5rem;
-    color: #007bff; /* Ładniejszy odcień niebieskiego niż czysty 'blue' */
+    position: relative;
+    z-index: 2;
+    color: #007bff;
+    font-size: 4rem;
     font-weight: 800;
-    margin-bottom: auto;
-    letter-spacing: 1px;
-    text-shadow: 0 0 15px rgba(0, 123, 255, 0.3); /* Delikatna poświata AI */
+    margin-bottom: 60px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 30px rgba(0, 123, 255, 0.5);
+    animation: fadeInDown 1s ease-out;
 }
+
 
 .content-wrapper {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
+    gap: 25px;
     width: 100%;
-    max-width: 250px; /* Nieco szersze dla lepszego wyglądu */
-    gap: 15px;
-    margin-top: auto;
-    margin-bottom: auto;
+    max-width: 320px;
 }
 
-/* Wspólny styl dla OBU przycisków */
+
 .main-page-button {
-    width: 100%;
-    padding: 15px 0;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    background-color: #007bff;
+    border: 2px solid #007bff;
     border-radius: 12px;
-    border: none;
-    font-size: 16px;
-    font-weight: 600;
     cursor: pointer;
-    background-color: #007bff; /* Niebieskie tło dla obu */
-    color: white;              /* Biały tekst dla obu */
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
+
 
 .main-page-button:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+    background-color: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0, 123, 255, 0.4);
+}
+
+.main-page-button:active {
+    transform: translateY(0);
 }
 
 /* ANIMACJE */
 
-@keyframes slideFromLeft {
-    0% { transform: translateX(-150%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slideFromRight {
-    0% { transform: translateX(150%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .slide-in-left {
-    animation: slideFromLeft 0.8s ease-out forwards;
+    animation: slideInLeft 0.8s ease-out;
 }
 
 .slide-in-right {
-    animation: slideFromRight 0.8s ease-out forwards;
+    animation: slideInRight 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

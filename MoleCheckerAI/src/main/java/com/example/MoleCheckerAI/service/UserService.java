@@ -1,8 +1,8 @@
 package com.example.MoleCheckerAI.service;
 
-import com.example.MoleCheckerAI.ScanHistory;
+import com.example.MoleCheckerAI.entity.ScanHistory;
 
-import com.example.MoleCheckerAI.User;
+import com.example.MoleCheckerAI.entity.User;
 import com.example.MoleCheckerAI.repository.ScanHistoryRepository;
 import com.example.MoleCheckerAI.repository.UserRepository;
 
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -30,7 +29,13 @@ public class UserService implements UserDetailsService {
         this.scanHistoryRepository = scanHistoryRepository;
         this.passwordEncoder = passwordEncoder;
     }
-    public User registerUser(String username, String rawPassword) {
+    public User registerUser(String username, String rawPassword,String email) {
+        if (userRepository.existsByUsername(username)) {
+            throw new RuntimeException("username exist");
+        }
+        if (userRepository.existsByEmail(email)){
+            throw new RuntimeException("exist account with this email");
+        }
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(rawPassword));
@@ -59,7 +64,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.example.MoleCheckerAI.User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())

@@ -1,6 +1,5 @@
-package com.example.MoleCheckerAI;
+package com.example.MoleCheckerAI.entity;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -18,8 +17,10 @@ public class User {
     @JsonProperty("username")
     private String username;
     @Column(nullable = false)
-    @JsonProperty("password")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+@Column(unique = true)
+    private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ScanHistory> scanHistory = new ArrayList<>();
@@ -28,11 +29,11 @@ public class User {
 
     }
 
-    public User(Long id, String username, String password, List<ScanHistory> scanHistory) {
-        this.id = id;
+    public User( String username, String password, List<ScanHistory> scanHistory,String email) {
         this.username = username;
         this.password = password;
         this.scanHistory = scanHistory;
+        this.email = email;
     }
 
     public Long getId() {
@@ -65,6 +66,18 @@ public class User {
 
     public void setScanHistory(List<ScanHistory> scanHistory) {
         this.scanHistory = scanHistory;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void addScan(ScanHistory scan){
+        this.scanHistory.add(scan);
+        scan.setUser(this);
     }
 }
 

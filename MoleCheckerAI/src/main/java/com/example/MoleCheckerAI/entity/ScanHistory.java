@@ -1,7 +1,8 @@
-package com.example.MoleCheckerAI;
+package com.example.MoleCheckerAI.entity;
 
 
 
+import com.example.MoleCheckerAI.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
