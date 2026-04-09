@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import MainPage from './components/MainPage';
 import LoginPage from './components/LoginPageTemp';
 import RegisterPage from './components/RegistryPageTemp';
-import Dashboard  from './components/Dashboard';
+import Dashboard from './components/Dashboard';
+import ConfirmEmail from './components/ConfirmEmail';
+
 function App() {
     const [view, setView] = useState('main'); 
 
+    
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('token')) {
+            setView('confirm-email');
+        }
+    }, []);
+
+    const handleBackToLogin = () => {
+       
+        window.history.pushState({}, document.title, "/");
+        setView('login');
+    };
+
     return (
         <div className="App">
+            
+           
+            {view === 'confirm-email' && (
+                <ConfirmEmail onBackToLogin={handleBackToLogin} />
+            )}
+
            
             {view === 'main' && (
                 <MainPage 
@@ -37,15 +59,14 @@ function App() {
                 />
             )}
 
-        
+           
             {view === 'dashboard' && (
-    <Dashboard onLogout={() => {
-        localStorage.removeItem('token');
-        setView('main');
-    }} />
-)}
+                <Dashboard onLogout={() => {
+                    localStorage.removeItem('token');
+                    setView('main');
+                }} />
+            )}
         </div>
-        
     );
 }
 

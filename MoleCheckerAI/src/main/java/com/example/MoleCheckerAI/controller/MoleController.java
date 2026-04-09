@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -21,15 +22,15 @@ public class MoleController {
         this.userService = userService;
     }
     @PostMapping
-    public ResponseEntity<String> scanMole(@RequestParam("file") MultipartFile file, Principal principal){
+    public ResponseEntity<?> scanMole(@RequestParam("file") MultipartFile file, Principal principal){
         if (file.isEmpty()){
-            return ResponseEntity.badRequest().body("Please send a image");
+            return ResponseEntity.badRequest().body(Map.of("message","Please send a image"));
         }
         try {
             String result = aiAnalyzerService.analyzeSkinImage(file.getResource());
             String username = principal.getName();
             userService.addScanToHistory(username,result);
-            return ResponseEntity.ok(result);
+           return ResponseEntity.ok(Map.of("message",result));
 
         } catch (Exception e){
             return ResponseEntity.status(500).body("Error during analyzing image " + e.getMessage() );

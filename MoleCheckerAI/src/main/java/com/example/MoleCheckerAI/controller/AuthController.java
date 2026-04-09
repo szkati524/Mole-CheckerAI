@@ -56,4 +56,13 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
         }
     }
+    @GetMapping("/confirm-email")
+    public ResponseEntity<?>  confirmEmail(@RequestParam("token") String token){
+        try {
+            userService.confirmEmailChange(token);
+            return ResponseEntity.ok(Map.of("message", "Email zaktualizowany!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
 }

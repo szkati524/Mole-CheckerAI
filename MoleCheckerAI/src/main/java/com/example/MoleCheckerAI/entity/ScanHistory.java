@@ -3,6 +3,7 @@ package com.example.MoleCheckerAI.entity;
 
 
 import com.example.MoleCheckerAI.entity.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,13 +15,14 @@ public class ScanHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+@Column(columnDefinition = "TEXT")
     private String aiResult;
 
     private LocalDateTime localDateTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     public ScanHistory(){
