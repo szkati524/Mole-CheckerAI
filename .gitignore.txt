@@ -1,0 +1,14 @@
+# Frontend
+mole-checker/node_modules/
+mole-checker/build/
+mole-checker/.env
+
+# Backend
+MoleCheckerAI/target/
+MoleCheckerAI/.idea/
+MoleCheckerAI/*.class
+MoleCheckerAI/.mvn/
+
+# Systemowe
+.DS_Store
+Thumbs.db
