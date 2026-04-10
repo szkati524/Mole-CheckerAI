@@ -142,3 +142,7 @@
     white-space: pre-wrap; 
     line-height: 1.6;
 }
+.modal-content {
+    max-height: 90vh; 
+    overflow-y: auto; 
+}

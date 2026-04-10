@@ -155,7 +155,7 @@ const Dashboard = ({ onLogout, userRole, onOpenAdmin }) => {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <button className="close-modal-btn" onClick={() => setShowOptions(false)}>×</button>
-                        <Options />
+                        <Options onLogout={onLogout}/>
                     </div>
                 </div>
             )}

@@ -65,6 +65,7 @@ public class SecurityConfig{
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/db/**").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(((request, response, authException) -> {

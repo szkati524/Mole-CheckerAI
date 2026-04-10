@@ -121,4 +121,14 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 }
+@Transactional
+    public void deleteUserWithPasswordVerification(String name, String rawPassword) {
+        User user = userRepository.findByUsername(name)
+                .orElseThrow(() -> new RuntimeException("Cannot find a user"));
+        if (!passwordEncoder.matches(rawPassword,user.getPassword())){
+            throw new RuntimeException("password is incorrect");
+        }
+        scanHistoryRepository.deleteByUser(user);
+        userRepository.delete(user);
+    }
 }

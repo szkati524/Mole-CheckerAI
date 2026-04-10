@@ -122,3 +122,72 @@ hr {
 ::placeholder {
     color: rgba(255, 255, 255, 0.4);
 }
+.danger-title {
+    color: #ff4b2b !important; 
+}
+
+.danger-text {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 5px;
+}
+
+
+.btn-delete {
+    padding: 14px;
+    background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+    filter: brightness(1.1);
+}
+
+
+.danger-zone input:focus {
+    border-color: #ff4b2b;
+    box-shadow: 0 0 10px rgba(255, 75, 43, 0.2);
+}
+.danger-zone-wrapper {
+    border: 1px solid rgba(255, 75, 43, 0.2);
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(255, 75, 43, 0.05);
+    margin-top: 10px;
+}
+
+.btn-danger-action {
+    padding: 14px;
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    margin-top: 15px; 
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3);
+}
+
+.btn-danger-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 75, 43, 0.5);
+    filter: brightness(1.2);
+}
+
+.btn-danger-action:active {
+    transform: translateY(0);
+}

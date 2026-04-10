@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios'; 
 import './LoginPageTemp.css';
 
-
 const LoginPage = ({ onLoginSuccess, onSwitchToRegister, onBack }) => {
     const [username, setUsername] = useState(''); 
     const [password, setPassword] = useState('');
@@ -18,19 +17,25 @@ const LoginPage = ({ onLoginSuccess, onSwitchToRegister, onBack }) => {
                 password: password
             });
 
+          
             if (response.data.token) {
-                onLoginSuccess(response.data.token); 
+              
+                onLoginSuccess(response.data.token, response.data.role); 
             }
         } catch (error) {
-            // Logujemy błąd tylko raz
             console.error("Błąd logowania:", error.response?.status);
-            setErrorMessage("Nieprawidłowy login, email lub hasło ❌");
+            
+   
+            if (error.response?.status === 401) {
+                setErrorMessage("Nieprawidłowy login lub hasło ❌");
+            } else {
+                setErrorMessage("Błąd serwera. Spróbuj ponownie później.");
+            }
         }
     };
 
     return (
         <div className="login-container">
-       
             <button className="back-arrow" onClick={onBack}>
                 <span className="arrow">←</span> Wróć
             </button>

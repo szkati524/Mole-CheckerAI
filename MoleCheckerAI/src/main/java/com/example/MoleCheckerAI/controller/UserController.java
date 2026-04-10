@@ -49,4 +49,19 @@ public class UserController {
                 return ResponseEntity.badRequest().body(Map.of("message",e.getMessage()));
             }
     }
-}
+    @PostMapping("/delete-account")
+    public ResponseEntity<?> deleteAccount(@RequestBody Map<String,String> request,Principal principal){
+        try{
+            String password = request.get("password");
+            String confirmPassword = request.get("confirmPassword");
+            if (password == null || !password.equals(confirmPassword)) {
+                return ResponseEntity.badRequest().body(Map.of("message","passwords is not the same"));
+            }
+            userService.deleteUserWithPasswordVerification(principal.getName(),password);
+            return ResponseEntity.ok(Map.of("message", "Konto zostało usunięte. Żegnaj!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+        }
+    }
+
