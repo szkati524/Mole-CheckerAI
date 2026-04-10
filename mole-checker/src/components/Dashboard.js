@@ -3,14 +3,13 @@ import axios from 'axios';
 import Options from './Options'; 
 import './Dashboard.css';
 
-const Dashboard = ({ onLogout }) => {
+
+const Dashboard = ({ onLogout, userRole, onOpenAdmin }) => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [history, setHistory] = useState([]);
     const [selectedScan, setSelectedScan] = useState(null);
-    
-  
     const [showOptions, setShowOptions] = useState(false);
 
     useEffect(() => {
@@ -66,8 +65,19 @@ const Dashboard = ({ onLogout }) => {
 
     return (
         <div className="dashboard-wrapper">
-           
+            
             <div className="top-right-nav">
+            
+                {userRole === 'ADMIN' && (
+                    <button 
+                        onClick={onOpenAdmin} 
+                        className="nav-btn admin-btn"
+                        style={{ backgroundColor: '#ffc107', color: '#000', fontWeight: 'bold' }}
+                    >
+                        🛡️ Panel Admina
+                    </button>
+                )}
+                
                 <button className="nav-btn" onClick={() => setShowOptions(true)}>Opcje</button>
                 <button className="nav-btn btn-logout" onClick={onLogout}>Wyloguj się</button>
             </div>
@@ -141,7 +151,6 @@ const Dashboard = ({ onLogout }) => {
                 </div>
             </main>
 
-           
             {showOptions && (
                 <div className="modal-overlay">
                     <div className="modal-content">

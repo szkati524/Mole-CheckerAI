@@ -80,7 +80,7 @@ public class UserService implements UserDetailsService {
             return org.springframework.security.core.userdetails.User
                     .withUsername(user.getUsername())
                     .password(user.getPassword())
-                    .authorities("USER")
+                    .authorities("ROLE_" + user.getRole().name())
                     .build();
         }
     public Optional<User> findByUsername(String username){

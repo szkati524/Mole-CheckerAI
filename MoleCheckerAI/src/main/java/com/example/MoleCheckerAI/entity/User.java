@@ -1,5 +1,6 @@
 package com.example.MoleCheckerAI.entity;
 
+import com.example.MoleCheckerAI.enums.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -26,16 +27,19 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ScanHistory> scanHistory = new ArrayList<>();
+@Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 
     public User() {
 
     }
 
-    public User( String username, String password, List<ScanHistory> scanHistory,String email) {
+    public User(String username, String password, String email, List<ScanHistory> scanHistory, Role role) {
         this.username = username;
         this.password = password;
-        this.scanHistory = scanHistory;
         this.email = email;
+        this.scanHistory = scanHistory;
+        this.role = role;
     }
 
     public Long getId() {
@@ -77,6 +81,15 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public void addScan(ScanHistory scan){
         this.scanHistory.add(scan);
         scan.setUser(this);

@@ -4,11 +4,11 @@ import LoginPage from './components/LoginPageTemp';
 import RegisterPage from './components/RegistryPageTemp';
 import Dashboard from './components/Dashboard';
 import ConfirmEmail from './components/ConfirmEmail';
-
+import AdminPanel from './components/AdminPanel'; 
 function App() {
     const [view, setView] = useState('main'); 
+    const [userRole, setUserRole] = useState(localStorage.getItem('role') || 'USER');
 
-    
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         if (params.has('token')) {
@@ -17,20 +17,16 @@ function App() {
     }, []);
 
     const handleBackToLogin = () => {
-       
         window.history.pushState({}, document.title, "/");
         setView('login');
     };
 
     return (
         <div className="App">
-            
-           
             {view === 'confirm-email' && (
                 <ConfirmEmail onBackToLogin={handleBackToLogin} />
             )}
 
-           
             {view === 'main' && (
                 <MainPage 
                     onLogin={() => setView('login')} 
@@ -38,11 +34,12 @@ function App() {
                 />
             )}
 
-           
             {view === 'login' && (
                 <LoginPage 
-                    onLoginSuccess={(token) => {
+                    onLoginSuccess={(token, role) => {
                         localStorage.setItem('token', token);
+                        localStorage.setItem('role', role); 
+                        setUserRole(role);
                         setView('dashboard'); 
                     }} 
                     onSwitchToRegister={() => setView('register')} 
@@ -50,7 +47,6 @@ function App() {
                 />
             )}
 
-           
             {view === 'register' && (
                 <RegisterPage 
                     onRegisterSuccess={() => setView('login')} 
@@ -59,12 +55,20 @@ function App() {
                 />
             )}
 
-           
             {view === 'dashboard' && (
-                <Dashboard onLogout={() => {
-                    localStorage.removeItem('token');
-                    setView('main');
-                }} />
+                <Dashboard 
+                    userRole={userRole}
+                    onLogout={() => {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('role');
+                        setView('main');
+                    }}
+                    onOpenAdmin={() => setView('admin-panel')}
+                />
+            )}
+
+            {view === 'admin-panel' && (
+                <AdminPanel onBack={() => setView('dashboard')} />
             )}
         </div>
     );
